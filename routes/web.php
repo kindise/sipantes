@@ -20,5 +20,6 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['prefix' => 'member'], function () {
         Route::get('/registrasi', [App\Http\Controllers\MemberController::class, 'viewregistrasi'])->name('registrasi');
         Route::post('/formulir', [App\Http\Controllers\MemberController::class, 'formulir'])->name('submit-pendaftaran');
+        Route::get('/list', [App\Http\Controllers\MemberController::class, 'list'])->name('list');
     });
 });

@@ -76,4 +76,20 @@ class MemberController extends Controller
         }
     }
 
+    public function list()
+    {
+        $title = 'Data Mmeber';
+        $breadcrumbs = [
+            [
+                'link'  => '/',
+                'name' => 'Dashboard'
+            ],
+            [
+                'name' => 'Data Member'
+            ]
+        ];
+
+        return view('pages.member', compact('title', 'breadcrumbs'));
+    }
+
 }
