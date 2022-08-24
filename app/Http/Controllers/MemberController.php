@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\DataTables;
 
 class MemberController extends Controller
 {
@@ -78,18 +79,30 @@ class MemberController extends Controller
 
     public function list()
     {
-        $title = 'Data Mmeber';
+        $title = 'Data Anggota';
         $breadcrumbs = [
             [
                 'link'  => '/',
                 'name' => 'Dashboard'
             ],
             [
-                'name' => 'Data Member'
+                'name' => 'Data Anggota'
             ]
         ];
 
         return view('pages.member', compact('title', 'breadcrumbs'));
+    }
+
+    public function datatable(Request $request)
+    {
+        $data = DB::table('MONITOR_KESEHATAN.dbo.msbiodata as a')
+                ->select('a.regno', 'a.nama', 'a.usia', 'b.nama as sex', 'a.nohp', 'c.nama_tipe')
+                ->join('MONITOR_KESEHATAN.dbo.mskelamin as b', 'a.jenis_kelamin', '=', 'b.id_kelamin')
+                ->join('MONITOR_KESEHATAN.dbo.mstipe as c', 'a.tipe_id', '=', 'c.tipe_id');
+        return datatables()->query($data)
+            ->filterColumn('sex', function($query, $keyword) {
+                $query->where('b.nama', 'like', "%{$keyword}%");
+        })->toJson();
     }
 
 }

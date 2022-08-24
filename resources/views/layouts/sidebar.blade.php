@@ -82,7 +82,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Data Member</span>
+                        <span class="menu-title">Data Anggota</span>
                     </a>
                     <!--end:Menu link-->
                 </div>
