@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Auth\UserFailLogin;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -93,7 +93,7 @@ class LoginController extends Controller
             if ($user) {
 
                 if (Auth::attempt($data)) {
-                    return redirect()->route('create-ticket');
+                    return redirect()->route('dashboard');
                 } else {
 
                     //insert log

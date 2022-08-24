@@ -16,13 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes(['verify' => false, 'register' => false]);
 Route::middleware(['auth'])->group(function () {
-   /*  Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
-    Route::group(['prefix' => 'pusatlayanan'], function () {
-        Route::get('/create-ticket', [App\Http\Controllers\TiketController::class, 'createticket'])->name('create-ticket');
-        Route::post('/submit-ticket', [App\Http\Controllers\TiketController::class, 'submit_tiket'])->name('submit-ticket');
-        Route::get('/cari-unit', [App\Http\Controllers\TiketController::class, 'cariunit'])->name('cari-unit');
-        Route::get('/antrian-tiket', [App\Http\Controllers\TiketController::class, 'viewantrian'])->name('antrian-tiket');
-        Route::get('/datatable-antrian', [App\Http\Controllers\TiketController::class, 'datatableantrian'])->name('datatable-antrian');
-    }); */
-
+    Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+    Route::group(['prefix' => 'member'], function () {
+        Route::get('/registrasi', [App\Http\Controllers\MemberController::class, 'viewregistrasi'])->name('registrasi');
+        Route::post('/formulir', [App\Http\Controllers\MemberController::class, 'formulir'])->name('submit-pendaftaran');
+    });
 });
