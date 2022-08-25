@@ -33,6 +33,7 @@
                     <table id="kt-anggota" class="table table-striped table-hover align-middle fs-7 table-row-bordered table-rounded gy-2 gs-2" style="width:100%">
                         <thead>
                             <tr class="fw-bold fs-6 text-gray-800">
+                                <th>Aksi</th>
                                 <th>No Anggota</th>
                                 <th>Nama</th>
                                 <th>Usia</th>
@@ -49,7 +50,9 @@
     </div>
 </div>
 @endsection
-
+@section('styletambahan')
+<link href="{{ asset('plugins/dist/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+@endsection
 @section('jstambahan')
 <script src="{{ asset('js/helper.js') }}"></script>
 <script src="{{ asset('plugins/dist/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
@@ -66,9 +69,10 @@
                 "lengthChange": false,
                 deferRender: true,
                 responsive: true,
-                order: [[0, 'desc']],
+                order: [[1, 'desc']],
                 ajax:  "{{ route('datatable') }}",
                 columns: [
+                    {data: 'aksi', name: 'aksi', "sortable": false, searchable: false},
                     {data: 'regno', name: 'a.regno'},
                     {data: 'nama', name: 'a.nama'},
                     {data: 'usia', name: 'a.usia', className:'text-end'},
@@ -76,6 +80,12 @@
                     {data: 'nohp', name: 'a.nohp'},
                     {data: 'nama_tipe', name: 'c.nama_tipe'},
                 ],
+                drawCallback: function(settings) {
+                    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                        return new bootstrap.Tooltip(tooltipTriggerEl)
+                    })
+                },
                  columnDefs: [{
                     "defaultContent": "-"
                     , "targets": "_all",

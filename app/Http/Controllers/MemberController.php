@@ -66,6 +66,7 @@ class MemberController extends Controller
             'tempat_kerja' => strtoupper($request->unit) ?? '',
             'nohp' => $request->nokontak,
             'tipe_id' => $request->iuran,
+            'fgactive' => 'Y',
             'created_at' => Carbon::now(),
             'created_by' => auth()->user()->no_absen,
         ]);
@@ -100,9 +101,41 @@ class MemberController extends Controller
                 ->join('MONITOR_KESEHATAN.dbo.mskelamin as b', 'a.jenis_kelamin', '=', 'b.id_kelamin')
                 ->join('MONITOR_KESEHATAN.dbo.mstipe as c', 'a.tipe_id', '=', 'c.tipe_id');
         return datatables()->query($data)
-            ->filterColumn('sex', function($query, $keyword) {
-                $query->where('b.nama', 'like', "%{$keyword}%");
-        })->toJson();
+                ->filterColumn('sex', function($query, $keyword) {
+                    $query->where('b.nama', 'like', "%{$keyword}%");
+                })
+                ->addColumn('aksi', function($data){
+                    $html  = '<a href="'.route('pantau', $data->regno).'" target="_blank" class="btn btn-icon btn-sm btn-success"';
+                    $html .= ' data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Buat Pemantauan">';
+                    $html .= '<i class="fa-solid fa-list-check"></i></a>';
+                    $html .= ' <a href="/cetak/geco/IGD22081817/igd" target="_blank" class="btn btn-icon btn-sm btn-primary"';
+                    $html .= ' data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Catatan Pemantauan">';
+                    $html .= '<i class="fa-solid fa-clock-rotate-left"></i></a>';
+                    return $html;
+                })
+                ->rawColumns(['aksi'])
+                ->toJson();
+    }
+
+    public function pantau($id)
+    {
+        $title = 'Pemantauan Kesehatan';
+        $breadcrumbs = [
+            [
+                'link'  => '/',
+                'name' => 'Dashboard'
+            ],
+            [
+                'name' => 'Pemantauan Kesehatan'
+            ]
+        ];
+        $query = DB::table('MONITOR_KESEHATAN.dbo.msbiodata')->where('regno', $id)->first();
+        return view('pages.pantau', compact('title', 'breadcrumbs', 'id', 'query'));
+    }
+
+    public function log($id)
+    {
+
     }
 
 }

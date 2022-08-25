@@ -2,7 +2,7 @@
 <html lang="en">
 	<!--begin::Head-->
 	<head><base href="">
-		<title>SiPantes RSUD Pasar Rebo </title>
+		<title>SiPantes RSUD Pasar Rebo</title>
 		<meta charset="utf-8" />
 		<meta name="description" content="Sistem Pemantauan Kesehatan RSUD Pasar Rebo Berbasis Digital" />
 		<meta name="keywords" content="Rumah sehat, RSUD Pasar Rebo, rumah sakit, sipantes rsud pasar rebo" />
