@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -129,13 +131,88 @@ class MemberController extends Controller
                 'name' => 'Pemantauan Kesehatan'
             ]
         ];
+
         $query = DB::table('MONITOR_KESEHATAN.dbo.msbiodata')->where('regno', $id)->first();
-        return view('pages.pantau', compact('title', 'breadcrumbs', 'id', 'query'));
+        $resiko = DB::table('MONITOR_KESEHATAN.dbo.msresiko')->get();
+        $predisposisi = DB::table('MONITOR_KESEHATAN.dbo.mspredisposisi')->get();
+        $diagnosis = DB::table('MONITOR_KESEHATAN.dbo.msdiagnosis')->get();
+
+        return view('pages.pantau', compact('title', 'breadcrumbs', 'id', 'query', 'resiko', 'predisposisi', 'diagnosis'));
     }
 
     public function log($id)
     {
 
+    }
+
+    public function detaildiagnosa(Request $request)
+    {
+        $id = $request->tipe;
+
+        $query = DB::table('MONITOR_KESEHATAN.dbo.diagnosisattr')->where('diagnosis_id', $id)->get();
+
+        return response()->json($query);
+
+    }
+
+    public function buatpantauan (Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $member = $request->member;
+            $trpantau = DB::table('MONITOR_KESEHATAN.dbo.trpantau')->insert([
+                'regno' => $member,
+                'pantau_date' => Carbon::now(),
+                'tinggibadan' => preg_replace('/,/', '.', $request->tb),
+                'beratbadan' => preg_replace('/,/', '.', $request->bb),
+                'lingkarperut' => preg_replace('/,/', '.', $request->lw),
+                'lingkarpanggul' => preg_replace('/,/', '.', $request->lp),
+                'imt' => preg_replace('/,/', '.', $request->imt),
+                'bbideal' => preg_replace('/,/', '.', $request->bbideal),
+                'rasiowh' => preg_replace('/,/', '.', $request->rasio),
+                'tekanandarah' => $request->tekanandarah,
+                'gdp' => $request->gdp ?? '',
+                'gds' => $request->gds ?? '',
+                'diet' => $request->diet ?? '',
+                'latihanfisik' => $request->fisik ?? '',
+                'created_at' => Carbon::now(),
+                'created_by' => auth()->user()->no_absen,
+            ]);
+            $pantauid = DB::getPdo()->lastInsertId();
+            $resiko_array = array_map(function ($v) use ($pantauid) {
+                return array(
+                    'pantau_id' => $pantauid,
+                    'faktor_id' => $v,
+                    'fgfaktor' => 'R',
+                    'created_at' => Carbon::now(),
+                    'created_by' => auth()->user()->no_absen,
+                );
+            }, $request->resiko);
+
+            $predisposisi_array = array_map(function ($v) use ($pantauid) {
+                return array(
+                    'pantau_id' => $pantauid,
+                    'faktor_id' => $v,
+                    'fgfaktor' => 'P',
+                    'created_at' => Carbon::now(),
+                    'created_by' => auth()->user()->no_absen,
+                );
+            }, $request->predisposisi);
+
+            $trfaktor = DB::table('MONITOR_KESEHATAN.dbo.trfaktor')->insert(array_merge($resiko_array, $predisposisi_array));
+            $trdiagnosis = DB::table('MONITOR_KESEHATAN.dbo.trdiagnosis')->insert([
+                'pantau_id' => $pantauid,
+                'diagnosis_id' => $request->diagnosis,
+                'diagnosisattr' => $request->obesitas,
+                'created_at' => Carbon::now(),
+                'created_by' => auth()->user()->no_absen,
+            ]);
+
+
+        } catch (QueryException $e){
+            DB::rollBack();
+            return redirect()->back()->with('msgerror', $e->getMessage());
+        }
     }
 
 }

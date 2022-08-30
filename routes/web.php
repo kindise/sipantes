@@ -24,5 +24,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/datatable', [App\Http\Controllers\MemberController::class, 'datatable'])->name('datatable');
         Route::get('/pantau/{id}', [App\Http\Controllers\MemberController::class, 'pantau'])->name('pantau');
         Route::get('/log/{id}', [App\Http\Controllers\MemberController::class, 'log'])->name('log');
+        Route::post('/detaildiagnosa', [App\Http\Controllers\MemberController::class, 'detaildiagnosa'])->name('detaildiagnosa');
+        Route::post('/buatpantauan', [App\Http\Controllers\MemberController::class, 'buatpantauan'])->name('buatpantauan');
     });
 });
