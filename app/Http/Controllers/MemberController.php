@@ -160,7 +160,9 @@ class MemberController extends Controller
         try {
             DB::beginTransaction();
             $member = $request->member;
+            $nopantau = collect(DB::select("EXEC MONITOR_KESEHATAN.dbo.sp_regpantauno"))->first()->NO_PANTAU;
             $trpantau = DB::table('MONITOR_KESEHATAN.dbo.trpantau')->insert([
+                'pantau_id' => $nopantau,
                 'regno' => $member,
                 'pantau_date' => Carbon::now(),
                 'tinggibadan' => preg_replace('/,/', '.', $request->tb),
@@ -178,10 +180,10 @@ class MemberController extends Controller
                 'created_at' => Carbon::now(),
                 'created_by' => auth()->user()->no_absen,
             ]);
-            $pantauid = DB::getPdo()->lastInsertId();
-            $resiko_array = array_map(function ($v) use ($pantauid) {
+            
+            $resiko_array = array_map(function ($v) use ($nopantau) {
                 return array(
-                    'pantau_id' => $pantauid,
+                    'pantau_id' => $nopantau,
                     'faktor_id' => $v,
                     'fgfaktor' => 'R',
                     'created_at' => Carbon::now(),
@@ -189,9 +191,9 @@ class MemberController extends Controller
                 );
             }, $request->resiko);
 
-            $predisposisi_array = array_map(function ($v) use ($pantauid) {
+            $predisposisi_array = array_map(function ($v) use ($nopantau) {
                 return array(
-                    'pantau_id' => $pantauid,
+                    'pantau_id' => $nopantau,
                     'faktor_id' => $v,
                     'fgfaktor' => 'P',
                     'created_at' => Carbon::now(),
@@ -201,17 +203,20 @@ class MemberController extends Controller
 
             $trfaktor = DB::table('MONITOR_KESEHATAN.dbo.trfaktor')->insert(array_merge($resiko_array, $predisposisi_array));
             $trdiagnosis = DB::table('MONITOR_KESEHATAN.dbo.trdiagnosis')->insert([
-                'pantau_id' => $pantauid,
+                'pantau_id' => $nopantau,
                 'diagnosis_id' => $request->diagnosis,
                 'diagnosisattr' => $request->obesitas,
                 'created_at' => Carbon::now(),
                 'created_by' => auth()->user()->no_absen,
             ]);
 
+            DB::commit();
 
+            return redirect()->back()->with('success', 'Pemantauan dengan nomor registrasi ' . $nopantau. 
+            ' dengan nomor anggota '. $member. ' pada bulan '. date('d F Y'). ' berhasil dibuat');
         } catch (QueryException $e){
             DB::rollBack();
-            return redirect()->back()->with('msgerror', $e->getMessage());
+            return redirect()->back()->with('msgerror', $e->getMessage())->withInput();
         }
     }
 

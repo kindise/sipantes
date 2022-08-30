@@ -3,7 +3,7 @@
 @section('title', 'Pemantauan Kesehatan Page')
 @section('content')
 <div class="row">
-    <div class="col-md-12 col-xxl-8">
+    <div class="col-md-12 col-xxl-12">
         <!--begin::Contacts-->
         <div class="card">
             <!--begin::Card header-->
@@ -39,7 +39,7 @@
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="tb"/>
+                                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="tb" value="{{ old('tb') }}"/>
                                         <span class="input-group-text" id="basic-addon2">cm</span>
                                     </div>
                                     <!--end::Input-->
@@ -52,7 +52,7 @@
                                     <!--end::Label-->
                                     <!--end::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="lw"/>
+                                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="lw" value="{{ old('lw') }}"/>
                                         <span class="input-group-text" id="basic-addon2">cm</span>
                                     </div>
                                     <!--end::Input-->
@@ -67,7 +67,7 @@
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="bb"/>
+                                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="bb" value="{{ old('bb') }}"/>
                                         <span class="input-group-text" id="basic-addon2">cm</span>
                                     </div>
                                     <!--end::Input-->
@@ -80,7 +80,7 @@
                                     <!--end::Label-->
                                     <!--end::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="lp"/>
+                                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="lp" value="{{ old('lp') }}"/>
                                         <span class="input-group-text" id="basic-addon2">cm</span>
                                     </div>
                                     <!--end::Input-->
@@ -93,7 +93,7 @@
                                     <!--begin::Label-->
                                     <label class="required fs-5 fw-semibold mb-2">IMT</label>
                                     <!--end::Label-->
-                                    <input type="text" class="form-control border border-dark" name="imt"/>
+                                    <input type="text" class="form-control border border-dark" name="imt" value="{{ old('imt') }}"/>
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
                                 <!--end::Col-->
                                 <!--begin::Col-->
@@ -102,7 +102,7 @@
                                     <label class="required fs-5 fw-semibold mb-2">Rasio W/H</label>
                                     <!--end::Label-->
                                     <!--end::Input-->
-                                    <input type="text" class="form-control border border-dark" name="rasio"/>
+                                    <input type="text" class="form-control border border-dark" name="rasio" value="{{ old('rasio') }}"/>
                                     <!--end::Input-->
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
                                 <!--end::Col-->
@@ -114,7 +114,7 @@
                                     <label class="required fs-5 fw-semibold mb-2">Berat Badan Ideal</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
-                                    <input type="text" class="form-control border border-dark" name="bbideal"/>
+                                    <input type="text" class="form-control border border-dark" name="bbideal" value="{{ old('bbideal') }}"/>
                                     <!--end::Input-->
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
                                 <!--end::Col-->
@@ -125,7 +125,7 @@
                                     <!--end::Label-->
                                     <!--end::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="tekanandarah"/>
+                                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="tekanandarah" value="{{ old('tekanandarah') }}"/>
                                         <span class="input-group-text" id="basic-addon2">mm/hg</span>
                                     </div>
                                     <!--end::Input-->
@@ -140,9 +140,9 @@
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <div class="input-group mb">
-                                        <input type="text" class="form-control  border border-dark" placeholder="GDP" name="gdp"/>
+                                        <input type="text" class="form-control  border border-dark" placeholder="GDP" name="gdp" value="{{ old('gdp') }}"/>
                                         <span class="input-group-text">/</span>
-                                        <input type="text" class="form-control  border border-dark" placeholder="GDS" name="gds"/>
+                                        <input type="text" class="form-control  border border-dark" placeholder="GDS" name="gds" value="{{ old('gds') }}"/>
                                         <span class="input-group-text">mg/dl</span>
                                     </div>
                                     <!--end::Input-->
@@ -157,7 +157,7 @@
                                     <!--end::Label-->
                                     @foreach($resiko as $val)
                                     <div class="form-check form-check-custom form-check-solid mt-2">
-                                        <input class="form-check-input border border-dark" type="checkbox" value="{{$val->resiko_id}}" id="fresiko" name="resiko[]" />
+                                        <input class="form-check-input border border-dark" type="checkbox" value="{{$val->resiko_id}}" id="fresiko" name="resiko[]" {{ (is_array(old('resiko')) and in_array($val->resiko_id, old('resiko'))) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="flexCheckDefault">
                                             {{$val->nama}}
                                         </label>
@@ -172,7 +172,7 @@
                                     <!--end::Label-->
                                     @foreach($predisposisi as $val)
                                     <div class="form-check form-check-custom form-check-solid mt-2">
-                                        <input class="form-check-input border border-dark" type="checkbox" value="{{$val->predisposisi_id}}" id="fpredisposisi" name="predisposisi[]"/>
+                                        <input class="form-check-input border border-dark" type="checkbox" value="{{$val->predisposisi_id}}" id="fpredisposisi" name="predisposisi[]" {{ (is_array(old('predisposisi')) and in_array($val->predisposisi_id, old('predisposisi'))) ? 'checked' : '' }}/>
                                         <label class="form-check-label" for="flexCheckDefault">
                                             {{$val->nama}}
                                         </label>
@@ -265,7 +265,7 @@
                                     <label class="fs-5 fw-semibold mb-2">Program Diet</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
-                                    <textarea class="form-control  border border-dark" name="diet"></textarea>
+                                    <textarea class="form-control  border border-dark" name="diet">{{ old('diet') }}</textarea>
                                     <!--end::Input-->
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
                                 <!--end::Col-->
@@ -277,16 +277,17 @@
                                     <label class="fs-5 fw-semibold mb-2">Program Latihan Fisik</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
-                                    <textarea class="form-control  border border-dark" name="fisik"></textarea>
+                                    <textarea class="form-control  border border-dark" name="fisik">{{ old('fisik') }}</textarea>
                                     <!--end::Input-->
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
                                 <!--end::Col-->
                             </div>
                             <div class="d-flex justify-content-end">
+                                <button class="btn btn-dark me-3 btn-sm" id="btnlog" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat catatan">Lihat Catatan</button>
                                 <!--begin::Button-->
-                                <button type="reset" data-kt-contacts-type="cancel" class="btn btn-danger me-3">Reset Form</button>
+                                <button type="reset" data-kt-contacts-type="cancel" class="btn btn-danger me-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Reset form">Reset Form</button>
                                 <!--begin::Button-->
-                                <button type="submit" data-kt-contacts-type="submit" class="btn btn-primary">
+                                <button type="submit" data-kt-contacts-type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Simpan data">
                                     <span class="indicator-label">Simpan Data</span>
                                 </button>
                                 <!--end::Button-->
@@ -375,6 +376,11 @@
     }
 
 </script>
+@if(session('success'))
+<script>
+  Swal.fire('Success', '{{ session('success') }}', 'success');
+</script>
+@endif
 @if(session('msgerror'))
 <script>
   Swal.fire('Error', '{{ session('msgerror') }}', 'error');
