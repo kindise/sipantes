@@ -110,7 +110,7 @@ class MemberController extends Controller
                     $html  = '<a href="'.route('pantau', $data->regno).'" target="_blank" class="btn btn-icon btn-sm btn-success"';
                     $html .= ' data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Buat Pemantauan">';
                     $html .= '<i class="fa-solid fa-list-check"></i></a>';
-                    $html .= ' <a href="/cetak/geco/IGD22081817/igd" target="_blank" class="btn btn-icon btn-sm btn-primary"';
+                    $html .= ' <a href="'.route('log', $data->regno).'" target="_blank" class="btn btn-icon btn-sm btn-primary"';
                     $html .= ' data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Catatan Pemantauan">';
                     $html .= '<i class="fa-solid fa-clock-rotate-left"></i></a>';
                     return $html;
@@ -142,7 +142,38 @@ class MemberController extends Controller
 
     public function log($id)
     {
+        $title = 'Catatan Pemantauan Kesehatan';
+        $breadcrumbs = [
+            [
+                'link'  => '/',
+                'name' => 'Dashboard'
+            ],
+            [
+                'name' => 'Catatan Anggota'
+            ]
+        ];
+        $query = DB::table('MONITOR_KESEHATAN.dbo.msbiodata')->where('regno', $id)->first();
+        return view('pages.catatan', compact('title', 'breadcrumbs', 'id', 'query'));
+    }
 
+    public function dtablelog($id)
+    {
+        $query = DB::table('MONITOR_KESEHATAN.dbo.trpantau')->select('pantau_id', 'regno', 'pantau_date')->where('regno', $id);
+        return datatables()->query($query)
+             ->addColumn('aksi', function($data){
+                $html  = '<button class="btn btn-icon btn-sm btn-primary me-3" name="'.$data->pantau_id.'"';
+                $html .= ' data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ubah Pemantauan" onclick="ubah(this);">';
+                $html .= '<i class="fa-solid fa-pencil"></i></a>';
+                $html .= ' <button class="btn btn-icon btn-sm btn-danger" name="'.$data->pantau_id.'"';
+                $html .= ' data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Hapus Pemantauan" onclick="hapus(this);">';
+                $html .= '<i class="fa-solid fa-trash"></i></a>';
+                return $html;
+            })
+            ->editColumn('pantau_date', function ($data) {
+                return Carbon::parse($data->pantau_date)->format('d F Y');
+            })
+            ->rawColumns(['aksi'])
+            ->toJson();
     }
 
     public function detaildiagnosa(Request $request)
@@ -217,6 +248,20 @@ class MemberController extends Controller
         } catch (QueryException $e){
             DB::rollBack();
             return redirect()->back()->with('msgerror', $e->getMessage())->withInput();
+        }
+    }
+
+    public function hapuscatatan(Request $request)
+    {
+        $pantauid = $request->pantau_id;
+        
+        try{
+            DB::table('MONITOR_KESEHATAN.dbo.trpantau')->where('pantau_id', $pantauid)->delete();
+            DB::table('MONITOR_KESEHATAN.dbo.trfaktor')->where('pantau_id', $pantauid)->delete();
+            DB::table('MONITOR_KESEHATAN.dbo.trdiagnosis')->where('pantau_id', $pantauid)->delete();
+            DB::commit();
+        }catch (QueryException $e){
+
         }
     }
 

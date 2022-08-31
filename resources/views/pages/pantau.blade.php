@@ -219,7 +219,7 @@
                                 <!--begin::Top-->
                                 <div class="mb-7">
                                     <!--begin::Title-->
-                                    <h2 class="fs-1 text-gray-800 w-bolder mb-6 pt-3">Detail Anggota</h2>
+                                    <h2 class="fs-1 text-gray-800 w-bolder mb-6 pt-3">Biodata Anggota</h2>
                                     <!--end::Title-->
                                     <!--begin::Text-->
                                     <div class="flex-equal me-5">
