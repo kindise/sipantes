@@ -374,7 +374,12 @@
         });
         id.checked = true;
     }
-
+    document.getElementById('btnlog').addEventListener('click', (e) => {
+        e.preventDefault();
+        var url = '{{ route("log", ":id") }}';
+        url = url.replace(':id', '{{ $id }}');
+        window.location.href = url;
+    });
 </script>
 @if(session('success'))
 <script>

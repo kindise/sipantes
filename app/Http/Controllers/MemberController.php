@@ -162,7 +162,7 @@ class MemberController extends Controller
         return datatables()->query($query)
              ->addColumn('aksi', function($data){
                 $html  = '<button class="btn btn-icon btn-sm btn-primary me-3" name="'.$data->pantau_id.'"';
-                $html .= ' data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ubah Pemantauan" onclick="ubah(this);">';
+                $html .= ' data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Ubah Pemantauan" onclick="ubah(this);">';
                 $html .= '<i class="fa-solid fa-pencil"></i></a>';
                 $html .= ' <button class="btn btn-icon btn-sm btn-danger" name="'.$data->pantau_id.'"';
                 $html .= ' data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Hapus Pemantauan" onclick="hapus(this);">';
@@ -211,7 +211,7 @@ class MemberController extends Controller
                 'created_at' => Carbon::now(),
                 'created_by' => auth()->user()->no_absen,
             ]);
-            
+
             $resiko_array = array_map(function ($v) use ($nopantau) {
                 return array(
                     'pantau_id' => $nopantau,
@@ -243,7 +243,7 @@ class MemberController extends Controller
 
             DB::commit();
 
-            return redirect()->back()->with('success', 'Pemantauan dengan nomor registrasi ' . $nopantau. 
+            return redirect()->back()->with('success', 'Pemantauan dengan nomor registrasi ' . $nopantau.
             ' dengan nomor anggota '. $member. ' pada bulan '. date('d F Y'). ' berhasil dibuat');
         } catch (QueryException $e){
             DB::rollBack();
@@ -254,14 +254,30 @@ class MemberController extends Controller
     public function hapuscatatan(Request $request)
     {
         $pantauid = $request->pantau_id;
-        
+
         try{
+            DB::beginTransaction();
             DB::table('MONITOR_KESEHATAN.dbo.trpantau')->where('pantau_id', $pantauid)->delete();
             DB::table('MONITOR_KESEHATAN.dbo.trfaktor')->where('pantau_id', $pantauid)->delete();
             DB::table('MONITOR_KESEHATAN.dbo.trdiagnosis')->where('pantau_id', $pantauid)->delete();
             DB::commit();
+            return response()->json(['msg' => 'Hapus item catatan dengan nomor pemnantauan '. $pantauid. ' berhasil dihapus'], 200);
         }catch (QueryException $e){
+            DB::rollBack();
+            return response()->json(['msg' => $e->getMessage()], 500);
+        }
+    }
 
+    public function trpantau($id)
+    {
+        try{
+            $trpantau = DB::table('MONITOR_KESEHATAN.dbo.trpantaux')->where('pantau_id', $id)->first();
+            //DB::table('MONITOR_KESEHATAN.dbo.trfaktor')->where('pantau_id', $pantauid)->delete();
+            //DB::table('MONITOR_KESEHATAN.dbo.trdiagnosis')->where('pantau_id', $pantauid)->delete();
+           // return response()->json(['msg' => 'Hapus item catatan dengan nomor pemnantauan '. $pantauid. ' berhasil dihapus'], 200);
+           return response()->json($trpantau);
+        }catch (QueryException $e){
+            return response()->json($e->getMessage(), 500);
         }
     }
 

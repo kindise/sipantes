@@ -79,6 +79,54 @@
      </div>
     </div>
 </div>
+
+<!--begin::View component-->
+<div
+    id="kt_drawer_example_basic"
+    class="bg-white"
+    data-kt-drawer="true"
+    data-kt-drawer-activate="true"
+    data-kt-drawer-toggle="#kt_drawer_example_basic_button"
+    data-kt-drawer-close="#kt_drawer_example_basic_close"
+    data-kt-drawer-overlay="true"
+    data-kt-drawer-width="{default:'500px', 'md': '500px'}"
+    data-kt-drawer-direction="start"
+>
+    <div class="card rounded-0 w-100">
+        <!--begin::Card header-->
+        <div class="card-header pe-5">
+            <!--begin::Title-->
+            <div class="card-title">
+                <!--begin::User-->
+                <div class="d-flex justify-content-center flex-column me-3">
+                    <a href="#" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 lh-1">Ubah Pemantauan</a>
+                </div>
+                <!--end::User-->
+            </div>
+            <!--end::Title-->
+            <!--begin::Card toolbar-->
+            <div class="card-toolbar">
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-light-primary" id="kt_drawer_example_basic_close">
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+                    <span class="svg-icon svg-icon-2">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor"></rect>
+                            <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor"></rect>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--end::Card toolbar-->
+        </div>
+        <div class="card-body hover-scroll-overlay-y">
+
+        </div>
+    </div>
+</div>
+<!--end::View component-->
 @endsection
 @section('styletambahan')
 <link href="{{ asset('plugins/dist/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -144,16 +192,54 @@
     KTUtil.onDOMContentLoaded(function() {
         KTDatatablesServerSide.init();
     });
-
+    KTDrawer.createInstances();
+    var drawerEl = document.querySelector("#kt_drawer_example_basic");
+    var drawer = KTDrawer.getInstance(drawerEl);
+    drawer.on("kt.drawer.toggle", function() {
+            console.log("kt.drawer.toggle event is fired");
+    });
+    drawer.on("kt.drawer.toggled", function() {
+        console.log("kt.drawer.toggled event is fired");
+    });
+    drawer.on("kt.drawer.hide", function() {
+        console.log("kt.drawer.hide event is fired");
+    });
+    drawer.on("kt.drawer.after.hidden", function() {
+        console.log("kt.drawer.after.hidden event is fired");
+    });
+    drawer.on("kt.drawer.show", function() {
+        console.log("kt.drawer.show event is fired");
+    });
+    drawer.on("kt.drawer.shown", function() {
+        console.log("kt.drawer.shown event is fired");
+    });
+    const ubah = async (e) => {
+        var kode = e.name;
+        var url = '{{ route("trpantau", ":id") }}';
+        url = url.replace(':id', kode);
+        try {
+            let response = await fetch(url);
+            let data = await response.json();
+            console.log(data);
+            drawer.show();
+          /*   url = 'http://10.0.10.201:2000/master/negara/patch/:id';
+            url = url.replace(':id', kode);
+            document.querySelector('input[name="kode_iso"]').value = data.ISO;
+            document.querySelector('input[name="nama_negara"]').value = data.NAME;
+            document.querySelector('input[name="kode_telpon"]').value = data.PHONECODE;
+            document.querySelector('input[name="country_id"]').value = data.COUNTRY_ID;
+            frm.setAttribute('action', url);
+            document.querySelector('input[name="_method"]').value = 'patch';
+            document.querySelector('#modal_header_negara h2').innerText = 'Edit Negara'; */
+        } catch (err) {
+            Swal.fire("Error", "Data tidak ditemukan", "error");
+        }
+    }
     const hapus = async (e) => {
         var kode = e.name;
         Swal.fire({
-            title: "Alasannya",
+            title: "Apa anda yakin ingin hapus item ini",
             icon: "question",
-            input: 'text',
-            inputAttributes: {
-                autocapitalize: 'off'
-            },
             buttonsStyling: false,
             showCancelButton: true,
             cancelButtonText: 'Keluar',
@@ -196,7 +282,7 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
-                    text: 'Hapus item catatan sukses',
+                    text: `${result.value.msg}`,
                     confirmButtonText: 'OK'
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -208,5 +294,6 @@
             }
         })
     }
+
 </script>
 @endsection

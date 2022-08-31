@@ -28,5 +28,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/buatpantauan', [App\Http\Controllers\MemberController::class, 'buatpantauan'])->name('buatpantauan');
         Route::get('/dtablelog/{id}', [App\Http\Controllers\MemberController::class, 'dtablelog'])->name('dtablelog');
         Route::post('/hapuscatatan', [App\Http\Controllers\MemberController::class, 'hapuscatatan'])->name('hapuscatatan');
+        Route::get('/trpantau/{id}', [App\Http\Controllers\MemberController::class, 'trpantau'])->name('trpantau');
     });
 });
