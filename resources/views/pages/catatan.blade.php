@@ -122,7 +122,66 @@
             <!--end::Card toolbar-->
         </div>
         <div class="card-body hover-scroll-overlay-y">
-
+        <form class="form fv-plugins-bootstrap5 fv-plugins-framework" method="post" action="{{ route('buatpantauan') }}">
+            @csrf
+            @method('patch')
+            <div class="row">
+                <!--begin::Col-->
+                <div class="col-md-6 fv-row fv-plugins-icon-container">
+                    <!--begin::Label-->
+                    <label class="required fs-5 fw-semibold mb-2">Tinggi Badan</label>
+                    <!--end::Label-->
+                    <!--begin::Input-->
+                    <div class="input-group">
+                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="tb" value="{{ old('tb') }}"/>
+                        <span class="input-group-text" id="basic-addon2">cm</span>
+                    </div>
+                    <!--end::Input-->
+                <div class="fv-plugins-message-container invalid-feedback"></div></div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-6 fv-row fv-plugins-icon-container">
+                    <!--end::Label-->
+                    <label class="required fs-5 fw-semibold mb-2">Lingkar Perut (W)</label>
+                    <!--end::Label-->
+                    <!--end::Input-->
+                    <div class="input-group">
+                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="lw" value="{{ old('lw') }}"/>
+                        <span class="input-group-text" id="basic-addon2">cm</span>
+                    </div>
+                    <!--end::Input-->
+                <div class="fv-plugins-message-container invalid-feedback"></div></div>
+                <!--end::Col-->
+            </div>
+            <div class="row">
+                <!--begin::Col-->
+                <div class="col-md-6 fv-row fv-plugins-icon-container">
+                    <!--begin::Label-->
+                    <label class="required fs-5 fw-semibold mb-2">Berat Badan</label>
+                    <!--end::Label-->
+                    <!--begin::Input-->
+                    <div class="input-group">
+                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="bb" value="{{ old('bb') }}"/>
+                        <span class="input-group-text" id="basic-addon2">cm</span>
+                    </div>
+                    <!--end::Input-->
+                <div class="fv-plugins-message-container invalid-feedback"></div></div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-6 fv-row fv-plugins-icon-container">
+                    <!--end::Label-->
+                    <label class="required fs-5 fw-semibold mb-2">Lingkar Panggul (H)</label>
+                    <!--end::Label-->
+                    <!--end::Input-->
+                    <div class="input-group">
+                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="lp" value="{{ old('lp') }}"/>
+                        <span class="input-group-text" id="basic-addon2">cm</span>
+                    </div>
+                    <!--end::Input-->
+                <div class="fv-plugins-message-container invalid-feedback"></div></div>
+                <!--end::Col-->
+            </div>
+        </form>
         </div>
     </div>
 </div>
@@ -218,7 +277,11 @@
         var url = '{{ route("trpantau", ":id") }}';
         url = url.replace(':id', kode);
         try {
-            let response = await fetch(url);
+            let response = await fetch(url, {});
+            if(!response.ok){
+                const text = await response.text();
+                throw new Error(text);
+            }
             let data = await response.json();
             console.log(data);
             drawer.show();
@@ -232,7 +295,7 @@
             document.querySelector('input[name="_method"]').value = 'patch';
             document.querySelector('#modal_header_negara h2').innerText = 'Edit Negara'; */
         } catch (err) {
-            Swal.fire("Error", "Data tidak ditemukan", "error");
+            Swal.fire("Error", err.message, "error");
         }
     }
     const hapus = async (e) => {

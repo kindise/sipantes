@@ -271,13 +271,11 @@ class MemberController extends Controller
     public function trpantau($id)
     {
         try{
-            $trpantau = DB::table('MONITOR_KESEHATAN.dbo.trpantaux')->where('pantau_id', $id)->first();
-            //DB::table('MONITOR_KESEHATAN.dbo.trfaktor')->where('pantau_id', $pantauid)->delete();
-            //DB::table('MONITOR_KESEHATAN.dbo.trdiagnosis')->where('pantau_id', $pantauid)->delete();
-           // return response()->json(['msg' => 'Hapus item catatan dengan nomor pemnantauan '. $pantauid. ' berhasil dihapus'], 200);
+           $trpantau = DB::table('MONITOR_KESEHATAN.dbo.trpantau')->where('pantau_id', $id)->first();
            return response()->json($trpantau);
         }catch (QueryException $e){
-            return response()->json($e->getMessage(), 500);
+            return response($e->getMessage(), 500)
+                  ->header('Content-Type', 'text/plain');
         }
     }
 
