@@ -189,7 +189,7 @@
                         <!--begin::Button-->
                         <button type="reset" data-kt-contacts-type="cancel" class="btn btn-danger me-3 btn-sm">Reset Form</button>
                         <!--end::Button-->
-                        <button class="btn btn-success me-3 btn-sm" id="btndatamember">Lihat Data Member</button>
+                        <!-- <button class="btn btn-success me-3 btn-sm" id="btndatamember">Lihat Data Member</button> -->
                         <!--begin::Button-->
                         <button type="submit" data-kt-contacts-type="submit" class="btn btn-primary btn-sm">
                             <span class="indicator-label">Ajukan Pendaftaran</span>

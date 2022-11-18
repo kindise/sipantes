@@ -39,7 +39,7 @@
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="tb" value="{{ old('tb') }}"/>
+                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="tb" value="{{ old('tb') }}"/>
                                         <span class="input-group-text" id="basic-addon2">cm</span>
                                     </div>
                                     <!--end::Input-->
@@ -52,7 +52,7 @@
                                     <!--end::Label-->
                                     <!--end::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="lw" value="{{ old('lw') }}"/>
+                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="lw" value="{{ old('lw') }}"/>
                                         <span class="input-group-text" id="basic-addon2">cm</span>
                                     </div>
                                     <!--end::Input-->
@@ -67,8 +67,8 @@
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="bb" value="{{ old('bb') }}"/>
-                                        <span class="input-group-text" id="basic-addon2">cm</span>
+                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="bb" value="{{ old('bb') }}"/>
+                                        <span class="input-group-text" id="basic-addon2">kg</span>
                                     </div>
                                     <!--end::Input-->
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
@@ -80,7 +80,7 @@
                                     <!--end::Label-->
                                     <!--end::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="lp" value="{{ old('lp') }}"/>
+                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="lp" value="{{ old('lp') }}"/>
                                         <span class="input-group-text" id="basic-addon2">cm</span>
                                     </div>
                                     <!--end::Input-->
@@ -93,7 +93,7 @@
                                     <!--begin::Label-->
                                     <label class="required fs-5 fw-semibold mb-2">IMT</label>
                                     <!--end::Label-->
-                                    <input type="text" class="form-control border border-dark" name="imt" value="{{ old('imt') }}"/>
+                                    <input type="text" class="form-control border border-dark text-end" name="imt" value="{{ old('imt') }}"/>
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
                                 <!--end::Col-->
                                 <!--begin::Col-->
@@ -102,7 +102,7 @@
                                     <label class="required fs-5 fw-semibold mb-2">Rasio W/H</label>
                                     <!--end::Label-->
                                     <!--end::Input-->
-                                    <input type="text" class="form-control border border-dark" name="rasio" value="{{ old('rasio') }}"/>
+                                    <input type="text" class="form-control border border-dark text-end" name="rasio" value="{{ old('rasio') }}"/>
                                     <!--end::Input-->
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
                                 <!--end::Col-->
@@ -114,7 +114,7 @@
                                     <label class="required fs-5 fw-semibold mb-2">Berat Badan Ideal</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
-                                    <input type="text" class="form-control border border-dark" name="bbideal" value="{{ old('bbideal') }}"/>
+                                    <input type="text" class="form-control border border-dark text-end" name="bbideal" value="{{ old('bbideal') }}"/>
                                     <!--end::Input-->
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
                                 <!--end::Col-->
@@ -125,7 +125,7 @@
                                     <!--end::Label-->
                                     <!--end::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark" aria-describedby="basic-addon2" name="tekanandarah" value="{{ old('tekanandarah') }}"/>
+                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="tekanandarah" value="{{ old('tekanandarah') }}"/>
                                         <span class="input-group-text" id="basic-addon2">mm/hg</span>
                                     </div>
                                     <!--end::Input-->
@@ -140,9 +140,9 @@
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <div class="input-group mb">
-                                        <input type="text" class="form-control  border border-dark" placeholder="GDP" name="gdp" value="{{ old('gdp') }}"/>
+                                        <input type="text" class="form-control  border border-dark text-end" placeholder="GDP" name="gdp" value="{{ old('gdp') }}"/>
                                         <span class="input-group-text">/</span>
-                                        <input type="text" class="form-control  border border-dark" placeholder="GDS" name="gds" value="{{ old('gds') }}"/>
+                                        <input type="text" class="form-control  border border-dark text-end" placeholder="GDS" name="gds" value="{{ old('gds') }}"/>
                                         <span class="input-group-text">mg/dl</span>
                                     </div>
                                     <!--end::Input-->
