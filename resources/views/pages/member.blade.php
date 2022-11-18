@@ -111,7 +111,6 @@
             init: function() {
                 initDatatable();
                 handleSearchDatatable();
-                //handleVerifikasi();
 
             }
         }
@@ -119,5 +118,66 @@
     KTUtil.onDOMContentLoaded(function() {
         KTDatatablesServerSide.init();
     });
+
+    const handleHapus = async (e) => {
+            var kode = e.name;
+            Swal.fire({
+                title: `Apa anda yakin ingin menonaktifkan anggota atas nama ${e.closest('tr').cells[2].innerText}`,
+                icon: "question",
+                buttonsStyling: false,
+                showCancelButton: true,
+                cancelButtonText: 'Keluar',
+                confirmButtonText: "Lanjutkan Hapus",
+                customClass: {
+                    confirmButton: "btn btn-primary",
+                    cancelButton: 'btn btn-danger'
+                },
+                showLoaderOnConfirm: true,
+                preConfirm: (input) => {
+                    var prm = {
+                        _token: '{{ csrf_token() }}',
+                        kode: `${kode}`
+                    }
+                    return fetch("{{ route('nonaktif') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(
+                                prm
+                            )
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText)
+                            }
+                            return response.json()
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            Swal.showValidationMessage(
+                                `Request failed: ${error}`
+                            )
+                        })
+                }
+                , allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: `${result.value.msg}`,
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = window.location.href;
+                        } else if (result.dismiss) {
+                            window.location.href = window.location.href;
+                        }
+                    })
+                }
+            })
+        }
 </script>
 @endsection

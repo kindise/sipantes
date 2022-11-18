@@ -101,7 +101,8 @@ class MemberController extends Controller
         $data = DB::table('MONITOR_KESEHATAN.dbo.msbiodata as a')
                 ->select('a.regno', 'a.nama', 'a.usia', 'b.nama as sex', 'a.nohp', 'c.nama_tipe')
                 ->join('MONITOR_KESEHATAN.dbo.mskelamin as b', 'a.jenis_kelamin', '=', 'b.id_kelamin')
-                ->join('MONITOR_KESEHATAN.dbo.mstipe as c', 'a.tipe_id', '=', 'c.tipe_id');
+                ->join('MONITOR_KESEHATAN.dbo.mstipe as c', 'a.tipe_id', '=', 'c.tipe_id')
+                ->where('a.fgactive' ,'Y');
         return datatables()->query($data)
                 ->filterColumn('sex', function($query, $keyword) {
                     $query->where('b.nama', 'like', "%{$keyword}%");
@@ -113,6 +114,9 @@ class MemberController extends Controller
                     $html .= ' <a href="'.route('log', $data->regno).'" target="_blank" class="btn btn-icon btn-sm btn-primary"';
                     $html .= ' data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Catatan Pemantauan">';
                     $html .= '<i class="fa-solid fa-clock-rotate-left"></i></a>';
+                    $html .= ' <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger" name="'.$data->regno.'"';
+                    $html .= ' data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Non Aktifkan Anggota" onclick="handleHapus(this);">';
+                    $html .= '<i class="fa-solid fa-trash"></i></a>';
                     return $html;
                 })
                 ->rawColumns(['aksi'])
@@ -196,13 +200,13 @@ class MemberController extends Controller
                 'pantau_id' => $nopantau,
                 'regno' => $member,
                 'pantau_date' => Carbon::now(),
-                'tinggibadan' => preg_replace('/,/', '.', $request->tb),
-                'beratbadan' => preg_replace('/,/', '.', $request->bb),
-                'lingkarperut' => preg_replace('/,/', '.', $request->lw),
-                'lingkarpanggul' => preg_replace('/,/', '.', $request->lp),
-                'imt' => preg_replace('/,/', '.', $request->imt),
-                'bbideal' => preg_replace('/,/', '.', $request->bbideal),
-                'rasiowh' => preg_replace('/,/', '.', $request->rasio),
+                'tinggibadan' => preg_replace('/,/', '.', $request->tb ?? 0),
+                'beratbadan' => preg_replace('/,/', '.', $request->bb ?? 0),
+                'lingkarperut' => preg_replace('/,/', '.', $request->lw ?? 0),
+                'lingkarpanggul' => preg_replace('/,/', '.', $request->lp ?? 0),
+                'imt' => preg_replace('/,/', '.', $request->imt ?? 0),
+                'bbideal' => preg_replace('/,/', '.', $request->bbideal ?? 0),
+                'rasiowh' => preg_replace('/,/', '.', $request->rasio ?? 0),
                 'tekanandarah' => $request->tekanandarah,
                 'gdp' => $request->gdp ?? '',
                 'gds' => $request->gds ?? '',
@@ -230,7 +234,7 @@ class MemberController extends Controller
                     'created_at' => Carbon::now(),
                     'created_by' => auth()->user()->no_absen,
                 );
-            }, $request->predisposisi);
+            }, $request->predisposisi ?? []);
 
             $trfaktor = DB::table('MONITOR_KESEHATAN.dbo.trfaktor')->insert(array_merge($resiko_array, $predisposisi_array));
             $trdiagnosis = DB::table('MONITOR_KESEHATAN.dbo.trdiagnosis')->insert([
@@ -245,7 +249,7 @@ class MemberController extends Controller
 
             return redirect()->back()->with('success', 'Pemantauan dengan nomor registrasi ' . $nopantau.
             ' dengan nomor anggota '. $member. ' pada bulan '. date('d F Y'). ' berhasil dibuat');
-        } catch (QueryException $e){
+        } catch (Exception $e){
             DB::rollBack();
             return redirect()->back()->with('msgerror', $e->getMessage())->withInput();
         }
@@ -276,6 +280,25 @@ class MemberController extends Controller
         }catch (QueryException $e){
             return response($e->getMessage(), 500)
                   ->header('Content-Type', 'text/plain');
+        }
+    }
+
+    public function nonaktif(Request $request)
+    {
+        try{
+            DB::beginTransaction();
+            $query = DB::table('MONITOR_KESEHATAN.dbo.msbiodata')->
+                    where('regno', $request->kode)
+                    ->update([
+                        'fgactive' => 'N',
+                        'deleted_at' => Carbon::now(),
+                        'deleted_by' => auth()->user()->no_absen,
+                    ]);
+            DB::commit();
+           return response()->json(['msg' => 'Data anggota berhasil dinonaktifkan']);
+        }catch (Exception $e){
+            DB::rollBack();
+            return response()->json(['msg' => $e->getMessage()], 500);
         }
     }
 

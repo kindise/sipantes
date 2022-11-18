@@ -29,5 +29,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dtablelog/{id}', [App\Http\Controllers\MemberController::class, 'dtablelog'])->name('dtablelog');
         Route::post('/hapuscatatan', [App\Http\Controllers\MemberController::class, 'hapuscatatan'])->name('hapuscatatan');
         Route::get('/trpantau/{id}', [App\Http\Controllers\MemberController::class, 'trpantau'])->name('trpantau');
+        Route::post('/nonaktif', [App\Http\Controllers\MemberController::class, 'nonaktif'])->name('nonaktif');
     });
 });
