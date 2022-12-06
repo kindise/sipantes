@@ -69,6 +69,7 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="bb" value="{{ old('bb') }}"/>
                                         <span class="input-group-text" id="basic-addon2">kg</span>
+                                        <button class="btn btn-primary bi bi-calculator" type="button" onclick="calculateBMI()"> Hitung IMT</span>
                                     </div>
                                     <!--end::Input-->
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
@@ -380,6 +381,40 @@
         url = url.replace(':id', '{{ $id }}');
         window.location.href = url;
     });
+
+    function calculateBMI() {
+        
+        /* Getting input from user into height variable.
+        Input is string so typecasting is necessary. */
+        let height = parseInt(document
+                .querySelector("input[name=tb]").value);
+
+        /* Getting input from user into weight variable. 
+        Input is string so typecasting is necessary.*/
+        let weight = parseInt(document
+                .querySelector("input[name=bb]").value);
+
+        let result = document.querySelector("input[name=imt]");
+
+        // Checking the user providing a proper
+        // value or not
+        if (height === "" || isNaN(height)) 
+            Swal.fire('Error', 'Tinggi badan tidak valid', 'error');
+
+        else if (weight === "" || isNaN(weight)) 
+            Swal.fire('Error', 'Berat badan tidak valid', 'error');
+
+        // If both input is valid, calculate the bmi
+        else {
+
+            // Fixing upto 2 decimal places
+            let bmi = (weight / ((height * height) 
+                                / 10000)).toFixed(2);
+
+            // Dividing as per the bmi conditions
+            result.value = bmi;
+        }
+    }
 </script>
 @if(session('success'))
 <script>
