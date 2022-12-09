@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PantesExport;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class MemberController extends Controller
@@ -192,6 +194,7 @@ class MemberController extends Controller
 
     public function buatpantauan (Request $request)
     {
+        
         try {
             DB::beginTransaction();
             $member = $request->member;
@@ -247,6 +250,7 @@ class MemberController extends Controller
 
             DB::commit();
 
+            //return Excel::download(new PantesExport($request->member, $nopantau), $nopantau.'.xlsx');
             return redirect()->back()->with('success', 'Pemantauan dengan nomor registrasi ' . $nopantau.
             ' dengan nomor anggota '. $member. ' pada bulan '. date('d F Y'). ' berhasil dibuat');
         } catch (Exception $e){
@@ -300,6 +304,32 @@ class MemberController extends Controller
             DB::rollBack();
             return response()->json(['msg' => $e->getMessage()], 500);
         }
+    }
+
+    public function export ()
+    {
+        $title = 'Export Excel';
+        $breadcrumbs = [
+            [
+                'link'  => '/',
+                'name' => 'Dashboard'
+            ],
+            [
+                'name' => 'Export Excel'
+            ]
+        ];
+
+
+        return view('pages.export', compact('title', 'breadcrumbs'));
+    }
+
+    public function exportexcel(Request $request)
+    {
+        $tglmulai = $request->tglmulai ?? date('Y-m-d');
+		$tglsd = $request->tglsd ?? date('Y-m-d');
+
+      
+        return Excel::download(new PantesExport($tglmulai, $tglsd), date('Y-m-d').'.xlsx');
     }
 
 }

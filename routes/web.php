@@ -30,5 +30,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/hapuscatatan', [App\Http\Controllers\MemberController::class, 'hapuscatatan'])->name('hapuscatatan');
         Route::get('/trpantau/{id}', [App\Http\Controllers\MemberController::class, 'trpantau'])->name('trpantau');
         Route::post('/nonaktif', [App\Http\Controllers\MemberController::class, 'nonaktif'])->name('nonaktif');
+        Route::get('/laporan/export', [App\Http\Controllers\MemberController::class, 'export'])->name('export');
+        Route::post('/exportexcel', [App\Http\Controllers\MemberController::class, 'exportexcel'])->name('exportexcel');
     });
 });
