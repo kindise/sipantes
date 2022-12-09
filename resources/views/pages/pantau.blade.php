@@ -39,7 +39,7 @@
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="tb" value="{{ old('tb') }}"/>
+                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="tb" value="{{ old('tb') }}" onkeyup="calcbbideal(this);"/>
                                         <span class="input-group-text" id="basic-addon2">cm</span>
                                     </div>
                                     <!--end::Input-->
@@ -102,9 +102,10 @@
                                     <!--end::Label-->
                                     <label class="required fs-5 fw-semibold mb-2">Rasio W/H</label>
                                     <!--end::Label-->
-                                    <!--end::Input-->
+                                    <div class="input-group">
                                     <input type="text" class="form-control border border-dark text-end" name="rasio" value="{{ old('rasio') }}"/>
-                                    <!--end::Input-->
+                                    <button class="btn btn-primary bi bi-calculator" type="button" onclick="calcRasio()"> Hitung Rasio</button>
+                                    </div>
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
                                 <!--end::Col-->
                             </div>
@@ -413,6 +414,52 @@
 
             // Dividing as per the bmi conditions
             result.value = bmi;
+        }
+    }
+
+    function calcbbideal(e){
+        var tb = e.value;
+        var jeniskelamin = '{{$query->jenis_kelamin}}';
+        var temp = tb - 100;
+        var result = 0;
+        if(jeniskelamin == 1){
+            result = (parseFloat(temp) * 90) / 100; 
+        }else{
+            result = (parseFloat(temp) * 83) / 100; 
+        }
+        document.querySelector('input[name=bbideal]').value = Math.round(result);
+    }
+
+    function calcRasio() {
+        
+        /* Getting input from user into height variable.
+        Input is string so typecasting is necessary. */
+        let lingkarperut = parseInt(document
+                .querySelector("input[name=lw]").value);
+
+        /* Getting input from user into weight variable. 
+        Input is string so typecasting is necessary.*/
+        let lingkarpanggul = parseInt(document
+                .querySelector("input[name=lp]").value);
+
+        let result = document.querySelector("input[name=rasio]");
+
+        // Checking the user providing a proper
+        // value or not
+        if (lingkarperut === "" || isNaN(lingkarperut)) 
+            Swal.fire('Error', 'Lingkar perut tidak valid', 'error');
+
+        else if (lingkarpanggul === "" || isNaN(lingkarpanggul)) 
+            Swal.fire('Error', 'Lingkar panggul tidak valid', 'error');
+
+        // If both input is valid, calculate the bmi
+        else {
+
+            // Fixing upto 2 decimal places
+            let rasio = (lingkarperut / lingkarpanggul);
+
+            // Dividing as per the bmi conditions
+            result.value = rasio;
         }
     }
 </script>
