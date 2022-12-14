@@ -144,8 +144,9 @@ class MemberController extends Controller
         $resiko = DB::table('MONITOR_KESEHATAN.dbo.msresiko')->get();
         $predisposisi = DB::table('MONITOR_KESEHATAN.dbo.mspredisposisi')->get();
         $diagnosis = DB::table('MONITOR_KESEHATAN.dbo.msdiagnosis')->get();
-
-        return view('pages.pantau', compact('title', 'breadcrumbs', 'id', 'query', 'resiko', 'predisposisi', 'diagnosis'));
+        $age = (int) $query->usia;
+    
+        return view('pages.pantau', compact('title', 'breadcrumbs', 'id', 'query', 'resiko', 'predisposisi', 'diagnosis', 'age'));
     }
 
     public function log($id)

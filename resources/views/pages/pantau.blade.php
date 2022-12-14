@@ -100,7 +100,7 @@
                                 <!--begin::Col-->
                                 <div class="col-md-6 fv-row fv-plugins-icon-container">
                                     <!--end::Label-->
-                                    <label class="required fs-5 fw-semibold mb-2">Rasio W/H</label>
+                                    <label class="required fs-5 fw-semibold mb-2">Rasio W/H</label> <span id="warnarasio"></span>
                                     <!--end::Label-->
                                     <div class="input-group">
                                     <input type="text" class="form-control border border-dark text-end" name="rasio" value="{{ old('rasio') }}"/>
@@ -322,6 +322,8 @@
         return /^-?\d*[.,]?\d*$/.test(value); });
     setInputFilter(document.querySelector('input[name=rasio]'), function(value) {
         return /^-?\d*[.,]?\d*$/.test(value); });
+
+    var warnarasio = document.getElementById('warnarasio');
     function selectOnlyThis(id){
         var myCheckbox = document.getElementsByName("diagnosis");
         if(id.checked){
@@ -454,12 +456,173 @@
 
         // If both input is valid, calculate the bmi
         else {
-
+            var age = '{{$age}}';
+            var jeniskelamin = '{{$query->jenis_kelamin}}';
             // Fixing upto 2 decimal places
-            let rasio = (lingkarperut / lingkarpanggul);
+            let rasio = (lingkarperut / lingkarpanggul).toFixed(2);
 
             // Dividing as per the bmi conditions
             result.value = rasio;
+
+            if(age >= 20 && age <= 29){
+                if(jeniskelamin == 1){
+                    if(rasio < 0.83){
+                        color = 'text-success';
+                        text = 'NORMAL';
+                    }else if(rasio >= 0.83 && rasio <= 0.88){
+                        color = 'text-warning';
+                        text = 'OBESITAS RINGAN';
+                    }else if(rasio >= 0.89 && rasio <= 0.94){
+                        color = 'text-info';
+                        text = 'OBESITAS BERAT';
+                    }else{
+                        color = 'text-danger';
+                        text = 'OBESITAS SANGAT BERAT';
+                    }
+                }else{
+                    if(rasio < 0.71){
+                        color = 'text-success';
+                        text = 'NORMAL';
+                    }else if(rasio >= 0.71 && rasio <= 0.77){
+                        color = 'text-warning';
+                        text = 'OBESITAS RINGAN';
+                    }else if(rasio >= 0.78 && rasio <= 0.82){
+                        color = 'text-info';
+                        text = 'OBESITAS BERAT';
+                    }else{
+                        color = 'text-danger';
+                        text = 'OBESITAS SANGAT BERAT';
+                    }
+                }
+            }else if(age >= 30 && age <= 39){
+                if(jeniskelamin == 1){
+                    if(rasio < 0.84){
+                        color = 'text-success';
+                        text = 'NORMAL';
+                    }else if(rasio >= 0.84 && rasio <= 0.91){
+                        color = 'text-warning';
+                        text = 'OBESITAS RINGAN';
+                    }else if(rasio >= 0.92 && rasio <= 0.96){
+                        color = 'text-info';
+                        text = 'OBESITAS BERAT';
+                    }else{
+                        color = 'text-danger';
+                        text = 'OBESITAS SANGAT BERAT';
+                    }
+                }else{
+                    if(rasio < 0.72){
+                        color = 'text-success';
+                        text = 'NORMAL';
+                    }else if(rasio >= 0.72 && rasio <= 0.78){
+                        color = 'text-warning';
+                        text = 'OBESITAS RINGAN';
+                    }else if(rasio >= 0.79 && rasio <= 0.84){
+                        color = 'text-info';
+                        text = 'OBESITAS BERAT';
+                    }else{
+                        color = 'text-danger';
+                        text = 'OBESITAS SANGAT BERAT';
+                    }
+                }
+            }else if(age >= 40 && age <= 49){
+                if(jeniskelamin == 1){
+                    if(rasio < 0.88){
+                        color = 'text-success';
+                        text = 'NORMAL';
+                    }else if(rasio >= 0.88 && rasio <= 0.95){
+                        color = 'text-warning';
+                        text = 'OBESITAS RINGAN';
+                    }else if(rasio >= 0.96 && rasio <= 1.00){
+                        color = 'text-info';
+                        text = 'OBESITAS BERAT';
+                    }else{
+                        color = 'text-danger';
+                        text = 'OBESITAS SANGAT BERAT';
+                    }
+                }else{
+                    if(rasio < 0.73){
+                        color = 'text-success';
+                        text = 'NORMAL';
+                    }else if(rasio >= 0.73 && rasio <= 0.79){
+                        color = 'text-warning';
+                        text = 'OBESITAS RINGAN';
+                    }else if(rasio >= 0.80 && rasio <= 0.87){
+                        color = 'text-info';
+                        text = 'OBESITAS BERAT';
+                    }else{
+                        color = 'text-danger';
+                        text = 'OBESITAS SANGAT BERAT';
+                    }
+                }
+            }else if(age >= 50 && age <= 59){
+                if(jeniskelamin == 1){
+                    if(rasio < 0.90){
+                        color = 'text-success';
+                        text = 'NORMAL';
+                    }else if(rasio >= 0.90 && rasio <= 0.96){
+                        color = 'text-warning';
+                        text = 'OBESITAS RINGAN';
+                    }else if(rasio >= 0.97 && rasio <= 1.02){
+                        color = 'text-info';
+                        text = 'OBESITAS BERAT';
+                    }else{
+                        color = 'text-danger';
+                        text = 'OBESITAS SANGAT BERAT';
+                    }
+                }else{
+                    if(rasio < 0.74){
+                        color = 'text-success';
+                        text = 'NORMAL';
+                    }else if(rasio >= 0.74 && rasio <= 0.81){
+                        color = 'text-warning';
+                        text = 'OBESITAS RINGAN';
+                    }else if(rasio >= 0.82 && rasio <= 0.88){
+                        color = 'text-info';
+                        text = 'OBESITAS BERAT';
+                    }else{
+                        color = 'text-danger';
+                        text = 'OBESITAS SANGAT BERAT';
+                    }
+                }
+            }else if(age >= 60 && age <= 69){
+                if(jeniskelamin == 1){
+                    if(rasio < 0.91){
+                        color = 'text-success';
+                        text = 'NORMAL';
+                    }else if(rasio >= 0.91 && rasio <= 0.98){
+                        color = 'text-warning';
+                        text = 'OBESITAS RINGAN';
+                    }else if(rasio >= 0.99 && rasio <= 1.03){
+                        color = 'text-info';
+                        text = 'OBESITAS BERAT';
+                    }else{
+                        color = 'text-danger';
+                        text = 'OBESITAS SANGAT BERAT';
+                    }
+                }else{
+                    if(rasio < 0.76){
+                        color = 'text-success';
+                        text = 'NORMAL';
+                    }else if(rasio >= 0.76 && rasio <= 0.83){
+                        color = 'text-warning';
+                        text = 'OBESITAS RINGAN';
+                    }else if(rasio >= 0.84 && rasio <= 0.90){
+                        color = 'text-info';
+                        text = 'OBESITAS BERAT';
+                    }else{
+                        color = 'text-danger';
+                        text = 'OBESITAS SANGAT BERAT';
+                    }
+                }
+            }
+            if(color === 'text-info'){
+                warnarasio.removeAttribute('class');
+                warnarasio.style.color = 'rgb(249 135 17)';
+            }else{
+                warnarasio.style.removeProperty('color');
+                warnarasio.setAttribute('class', color);
+            }
+            warnarasio.innerText = text;
         }
     }
 </script>
