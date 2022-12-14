@@ -32,5 +32,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/nonaktif', [App\Http\Controllers\MemberController::class, 'nonaktif'])->name('nonaktif');
         Route::get('/laporan/export', [App\Http\Controllers\MemberController::class, 'export'])->name('export');
         Route::post('/exportexcel', [App\Http\Controllers\MemberController::class, 'exportexcel'])->name('exportexcel');
+        Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('memberlogout');
+        Route::get('/changepwd', [App\Http\Controllers\MemberController::class, 'changepwd'])->name('changepwd');
+        Route::post('/submitpwd', [App\Http\Controllers\MemberController::class, 'pwd'])->name('pwd');
     });
 });

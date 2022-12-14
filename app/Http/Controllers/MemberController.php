@@ -7,7 +7,9 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
@@ -330,6 +332,55 @@ class MemberController extends Controller
 
       
         return Excel::download(new PantesExport($tglmulai, $tglsd), date('Y-m-d').'.xlsx');
+    }
+
+    public function changepwd()
+    {
+        $title = 'Change Password';
+        $breadcrumbs = [
+            [
+                'link'  => '/',
+                'name' => 'Dashboard'
+            ],
+            [
+                'name' => 'Change Password'
+            ]
+        ];
+        return view('pages.changepwd', compact('title', 'breadcrumbs'));
+    }
+
+    public function pwd(Request $request)
+    {
+        $validatedData = $request->validate([
+            //'pwdlama' => 'required',
+            'pwd' => 'required|min:6|confirmed',
+            'pwd_confirmation' => 'required|min:6',
+        ],
+        [
+            //'pwdlama.required' => 'Password Lama Harus Diisi',
+            'pwd.required' => 'Password Baru Harus Diisi',
+            'pwd.min' => 'Password Baru Minimal 6 Karakter',
+            'pwd.confirmed' => 'Password Baru Tidak Sama',
+            'pwd_confirmation.required' => 'Konfirmasi Password Baru Harus Diisi',
+            'pwd_confirmation.min' => 'Konfirmasi Password Baru Minimal 6 Karakter',
+        ]);
+
+        $newpwd = $request->pwd;
+        $confirmpwd = $request->pwd_confirmation;
+        $user = Auth::user();
+        $oldpwd = $user->password;
+        //if (Hash::check($request->pwdlama, $oldpwd)) {
+            if($newpwd != $confirmpwd){
+                return redirect()->back()->with('error', 'Password baru dan konfirmasi password tidak sama');
+            }else{
+                $user = Auth::user();
+                $user->password = bcrypt($newpwd);
+                $user->save();
+                return redirect()->back()->with('msg', 'Password berhasil diubah');
+            }
+        /*} else {
+            return redirect()->back()->with('error', 'Password lama tidak sesuai');
+        }*/
     }
 
 }

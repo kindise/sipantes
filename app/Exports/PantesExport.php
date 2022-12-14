@@ -28,7 +28,9 @@ class PantesExport implements FromView
                 $tanggal = $tglmulai ?: $tglsd;
                 return $query->whereRaw("CONVERT(varchar, pantau_date,23) =  ? ", [$tanggal]);
             }
-        })->join('MONITOR_KESEHATAN.dbo.msbiodata' ,'msbiodata.regno','=','trpantau.regno')->get();
+        })->join('MONITOR_KESEHATAN.dbo.msbiodata' ,'msbiodata.regno','=','trpantau.regno')
+        ->where('msbiodata.fgactive', 'Y')
+        ->get();
         
         return view('exports.pantau', [
             'query' => $trpantau
