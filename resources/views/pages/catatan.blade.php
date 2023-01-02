@@ -25,10 +25,22 @@
                         <table id="kt-log" class="table table-striped table-hover align-middle fs-7 table-row-bordered table-rounded gy-2 gs-2" style="width:100%">
                             <thead>
                                 <tr class="fw-bold fs-6 text-gray-800">
-                                    <th>Aksi</th>
-                                    <th>No Pemantauan</th>
-                                    <th>No Anggota</th>
-                                    <th>Tanggal</th>
+                                    <th class="min-w-125px">Aksi</th>
+                                    <th class="min-w-125px">No Pemantauan</th>
+                                    <th class="min-w-125px">No Anggota</th>
+                                    <th class="min-w-125px">Tanggal</th>
+                                    <th class="min-w-125px">TB</th>
+                                    <th class="min-w-125px">BB</th>
+                                    <th class="min-w-125px">Lingkar Perut</th>
+                                    <th class="min-w-125px">Lingkar Panggul</th>
+                                    <th class="min-w-125px">IMT</th>
+                                    <th class="min-w-125px">BB Ideal</th>
+                                    <th class="min-w-125px">Rasio W/H</th>
+                                    <th class="min-w-125px">TD</th>
+                                    <th class="min-w-125px">GDP / GDS</th>
+                                    <th class="min-w-125px">Diet</th>
+                                    <th class="min-w-125px">Latihan Fisik</th>
+                                    <th class="min-w-125px">Diagnosis</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -203,7 +215,6 @@
                 processing: true,
                 serverSide: true,
                 deferRender: true,
-                responsive: true,
                 order: [],
                 ajax:  url,
                 columns: [
@@ -211,6 +222,25 @@
                     {data: 'pantau_id', name: 'pantau_id'},
                     {data: 'regno', name: 'regno'},
                     {data: 'pantau_date', name: 'pantau_date'},
+                    {data: 'tinggibadan', name: 'tinggibadan'},
+                    {data: 'beratbadan', name: 'beratbadan'},
+                    {data: 'lingkarperut', name: 'lingkarperut'},
+                    {data: 'lingkarpanggul', name: 'lingkarpanggul'},
+                    {data: 'imt', name: 'imt'},
+                    {data: 'bbideal', name: 'bbideal'},
+                    {data: 'rasiowh', name: 'rasiowh'},
+                    {data: 'tekanandarah', name: 'tekanandarah'},
+                    {data: null,
+                        render: function ( data, type, row ) {
+                            return data.gdp + '/' + data.gds;
+                    }},
+                    {data: 'diet', name: 'diet'},
+                    {data: 'latihanfisik', name: 'latihanfisik'},
+                    {data: null,
+                        render: function ( data, type, row ) {
+                            return data.nama_diagnosis + ' -> ' + data.nama_attr;
+                    }},
+                    
                 ],
                 drawCallback: function(settings) {
                     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

@@ -39,7 +39,7 @@
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="tb" value="{{ old('tb') }}" onkeyup="calcbbideal(this);"/>
+                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="tb" value="{{ $pantau->tinggibadan ?? old('tb') }}" onkeyup="calcbbideal(this);" value="{{ $pantau->tinggibadan ?? '' }}"/>
                                         <span class="input-group-text" id="basic-addon2">cm</span>
                                     </div>
                                     <!--end::Input-->
@@ -52,7 +52,7 @@
                                     <!--end::Label-->
                                     <!--end::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="lw" value="{{ old('lw') }}"/>
+                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="lw" value="{{ $pantau->lingkarperut ?? old('lw') }}"/>
                                         <span class="input-group-text" id="basic-addon2">cm</span>
                                     </div>
                                     <!--end::Input-->
@@ -67,7 +67,7 @@
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="bb" value="{{ old('bb') }}"/>
+                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="bb" value="{{ $pantau->beratbadan ?? old('bb') }}"/>
                                         <span class="input-group-text" id="basic-addon2">kg</span>
                                         <button class="btn btn-primary bi bi-calculator" type="button" onclick="calculateBMI()"> Hitung IMT</span>
                                     </div>
@@ -81,7 +81,7 @@
                                     <!--end::Label-->
                                     <!--end::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="lp" value="{{ old('lp') }}"/>
+                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="lp" value="{{ $pantau->lingkarpanggul ?? old('lp') }}"/>
                                         <span class="input-group-text" id="basic-addon2">cm</span>
                                     </div>
                                     <!--end::Input-->
@@ -94,7 +94,7 @@
                                     <!--begin::Label-->
                                     <label class="required fs-5 fw-semibold mb-2">IMT</label>
                                     <!--end::Label-->
-                                    <input type="text" class="form-control border border-dark text-end" name="imt" value="{{ old('imt') }}"/>
+                                    <input type="text" class="form-control border border-dark text-end" name="imt" value="{{ $pantau->imt ?? old('imt') }}"/>
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
                                 <!--end::Col-->
                                 <!--begin::Col-->
@@ -103,7 +103,7 @@
                                     <label class="required fs-5 fw-semibold mb-2">Rasio W/H</label> <span id="warnarasio"></span>
                                     <!--end::Label-->
                                     <div class="input-group">
-                                    <input type="text" class="form-control border border-dark text-end" name="rasio" value="{{ old('rasio') }}"/>
+                                    <input type="text" class="form-control border border-dark text-end" name="rasio" value="{{ $pantau->rasiowh ?? old('rasio') }}"/>
                                     <button class="btn btn-primary bi bi-calculator" type="button" onclick="calcRasio()"> Hitung Rasio</button>
                                     </div>
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
@@ -116,7 +116,7 @@
                                     <label class="required fs-5 fw-semibold mb-2">Berat Badan Ideal</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
-                                    <input type="text" class="form-control border border-dark text-end" name="bbideal" value="{{ old('bbideal') }}"/>
+                                    <input type="text" class="form-control border border-dark text-end" name="bbideal" value="{{ $pantau->bbideal ?? old('bbideal') }}"/>
                                     <!--end::Input-->
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
                                 <!--end::Col-->
@@ -127,7 +127,7 @@
                                     <!--end::Label-->
                                     <!--end::Input-->
                                     <div class="input-group">
-                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="tekanandarah" value="{{ old('tekanandarah') }}"/>
+                                        <input type="text" class="form-control border border-dark text-end" aria-describedby="basic-addon2" name="tekanandarah" value="{{ $pantau->tekanandarah ?? old('tekanandarah') }}"/>
                                         <span class="input-group-text" id="basic-addon2">mm/hg</span>
                                     </div>
                                     <!--end::Input-->
@@ -142,9 +142,9 @@
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <div class="input-group mb">
-                                        <input type="text" class="form-control  border border-dark text-end" placeholder="GDP" name="gdp" value="{{ old('gdp') }}"/>
+                                        <input type="text" class="form-control  border border-dark text-end" placeholder="GDP" name="gdp" value="{{ $pantau->gdp ?? old('gdp') }}"/>
                                         <span class="input-group-text">/</span>
-                                        <input type="text" class="form-control  border border-dark text-end" placeholder="GDS" name="gds" value="{{ old('gds') }}"/>
+                                        <input type="text" class="form-control  border border-dark text-end" placeholder="GDS" name="gds" value="{{ $pantau->gds ?? old('gds') }}"/>
                                         <span class="input-group-text">mg/dl</span>
                                     </div>
                                     <!--end::Input-->
@@ -267,7 +267,7 @@
                                     <label class="fs-5 fw-semibold mb-2">Program Diet</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
-                                    <textarea class="form-control  border border-dark" name="diet">{{ old('diet') }}</textarea>
+                                    <textarea class="form-control  border border-dark" name="diet">{{ $pantau->diet ?? old('diet') }}</textarea>
                                     <!--end::Input-->
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
                                 <!--end::Col-->
@@ -279,7 +279,7 @@
                                     <label class="fs-5 fw-semibold mb-2">Program Latihan Fisik</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
-                                    <textarea class="form-control  border border-dark" name="fisik">{{ old('fisik') }}</textarea>
+                                    <textarea class="form-control  border border-dark" name="fisik">{{ $pantau->latihanfisik ?? old('fisik') }}</textarea>
                                     <!--end::Input-->
                                 <div class="fv-plugins-message-container invalid-feedback"></div></div>
                                 <!--end::Col-->

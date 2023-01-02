@@ -16,6 +16,11 @@ $color = '';
         <th>Rasio</th>
         <th>TD</th>
         <th>GDP/GDS</th>
+        <th>Faktor Resiko</th>
+        <th>Predisposisi</th>
+        <th>Diagnosis</th>
+        <th>Diet</th>
+        <th>Latihan Fisik</th>
     </tr>
     </thead>
     <tbody>
@@ -225,6 +230,11 @@ $color = '';
             <td style="color: {{ $color }};">{{ $val->rasiowh }}</td>
             <td>{{ $val->tekanandarah }}</td>
             <td>{{ $val->gdp }} / {{ $val->gds }}</td>
+            <td>{{ $val->resiko }}</td>
+            <td>{{ $val->predisposisi }}</td>
+            <td>{{ $val->diagnosis }}</td>
+            <td>{{ $val->diet }}</td>
+            <td>{{ $val->latihanfisik }}</td>
         </tr>
         @endforeach
     </tbody>

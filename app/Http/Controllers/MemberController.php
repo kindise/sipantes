@@ -145,8 +145,13 @@ class MemberController extends Controller
         $predisposisi = DB::table('MONITOR_KESEHATAN.dbo.mspredisposisi')->get();
         $diagnosis = DB::table('MONITOR_KESEHATAN.dbo.msdiagnosis')->get();
         $age = (int) $query->usia;
+        $pantau = DB::table('MONITOR_KESEHATAN.dbo.trpantau')
+        ->join('MONITOR_KESEHATAN.dbo.trdiagnosis as d','trpantau.pantau_id','=','d.pantau_id')
+        ->join('MONITOR_KESEHATAN.dbo.msdiagnosis as md','d.diagnosis_id','=','md.diagnosis_id')
+        ->leftJoin('MONITOR_KESEHATAN.dbo.diagnosisattr as attr','d.diagnosisattr','=','attr.diagnosis_attr')
+        ->where('regno', $id)->latest('trpantau.pantau_id')->first();
     
-        return view('pages.pantau', compact('title', 'breadcrumbs', 'id', 'query', 'resiko', 'predisposisi', 'diagnosis', 'age'));
+        return view('pages.pantau', compact('title', 'breadcrumbs', 'id', 'query', 'resiko', 'predisposisi', 'diagnosis', 'age' , 'pantau'));
     }
 
     public function log($id)
@@ -167,7 +172,11 @@ class MemberController extends Controller
 
     public function dtablelog($id)
     {
-        $query = DB::table('MONITOR_KESEHATAN.dbo.trpantau')->select('pantau_id', 'regno', 'pantau_date')->where('regno', $id);
+        $query = DB::table('MONITOR_KESEHATAN.dbo.trpantau')
+        ->join('MONITOR_KESEHATAN.dbo.trdiagnosis as d','trpantau.pantau_id','=','d.pantau_id')
+        ->join('MONITOR_KESEHATAN.dbo.msdiagnosis as md','d.diagnosis_id','=','md.diagnosis_id')
+        ->leftJoin('MONITOR_KESEHATAN.dbo.diagnosisattr as attr','d.diagnosisattr','=','attr.diagnosis_attr')
+        ->where('regno', $id);
         return datatables()->query($query)
              ->addColumn('aksi', function($data){
                 $html  = '<button class="btn btn-icon btn-sm btn-primary me-3" name="'.$data->pantau_id.'"';
