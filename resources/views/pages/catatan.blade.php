@@ -90,6 +90,48 @@
         </div>
      </div>
     </div>
+    <div class="col-md-12">
+    <div class="card ">
+    <div class="card-header card-header-stretch">
+        <h3 class="card-title">Grafik</h3>
+        <div class="card-toolbar">
+            <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0">
+                <!-- <li class="nav-item">
+                    <a class="nav-link active text-active-primary" data-bs-toggle="tab" href="#kt_tab_pane_7">IMT</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary" data-bs-toggle="tab" href="#kt_tab_pane_8">Rasio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary" data-bs-toggle="tab" href="#kt_tab_pane_9">Tekanan Darah</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary" data-bs-toggle="tab" href="#kt_tab_pane_10">GDP/GDS</a>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="kt_tab_pane_7" role="tabpanel">
+                <canvas id="kt_chart"></canvas>
+            </div>
+
+            <!-- <div class="tab-pane fade" id="kt_tab_pane_8" role="tabpanel">
+                <canvas id="chart_rasio" class="mh-400px"></canvas>
+            </div>
+
+            <div class="tab-pane fade" id="kt_tab_pane_9" role="tabpanel">
+                <canvas id="chart_td" class="mh-400px"></canvas>
+            </div>
+
+            <div class="tab-pane fade" id="kt_tab_pane_10" role="tabpanel">
+                <canvas id="chart_gdpgds" class="mh-400px"></canvas>
+            </div> -->
+        </div>
+    </div>
+</div>
+    </div>
 </div>
 
 <!--begin::View component-->
@@ -387,6 +429,89 @@
             }
         })
     }
+
+    const graphimt = async () => {
+        var ctx = document.getElementById('kt_chart');
+        // Define colors
+        var primaryColor = KTUtil.getCssVariableValue('--kt-primary');
+        var dangerColor = KTUtil.getCssVariableValue('--kt-danger');
+        var successColor = KTUtil.getCssVariableValue('--kt-success');
+        // Define fonts
+        var fontFamily = KTUtil.getCssVariableValue('--bs-font-sans-serif');
+
+        try {
+            var url = '{{ route("chart", ":regno") }}';
+            url = url.replace(':regno', window.location.pathname.split('/')[3]);
+            let label = [];
+            let response = await fetch(`${url}`, {});
+            let data = await response.json();
+            if(!response.ok){
+                throw new Error(data.msg);
+            }
+            label.push(...data.label);
+            // Chart data
+            let ds = {
+                labels: label,
+                datasets: data.data
+            };
+
+            console.log(ds);
+
+
+            // Chart config
+            const config = {
+                type: 'bar',
+                data: ds,
+                options: {
+                    plugins: {
+                        title: {
+                            display: false,
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            title: {
+                            display: true,
+                            text: 'Grafik IMT, Rasio, Tekanan Darah, GDP/GDS',
+                            color: '#911',
+                            font: {
+                                family: 'Comic Sans MS',
+                                size: 20,
+                                weight: 'bold',
+                                lineHeight: 1.2,
+                            },
+                                padding: {top: 20, left: 0, right: 0, bottom: 0}
+                            },
+                        },
+                        y: [{
+                            ticks: {
+                                min: -10,
+                                max: 100,
+                                stepSize: 5
+                            }
+                        }]
+                    }
+                },
+                defaults:{
+                    global: {
+                        defaultFont: fontFamily
+                    }
+                }
+            };
+
+            var myChart = new Chart(ctx, config);
+            
+        } catch (err) {
+            console.log(err);
+            Swal.fire("Error", err.msg, "error");
+        }
+    }
+
+    graphimt();
 
 </script>
 @endsection

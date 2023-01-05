@@ -393,4 +393,59 @@ class MemberController extends Controller
         }*/
     }
 
+    public function chart($regno)
+    {
+        $temp = array(
+            array(
+                'label'=>'IMT',
+                'backgroundColor'=> 'rgba(255,221,50,0.2)',
+                'data' => array(),
+                'stack' => 'Stack 0',
+            ),
+            array(
+                'label'=>'Rasio',
+                'backgroundColor'=> 'rgba(60,186,159,0.2)',
+                'data' => array(),
+                'stack' => 'Stack 1',
+            ),
+            array(
+                'label'=>'Tekanan Darah',
+                'backgroundColor'=> 'rgba(0,0,0,0.2)',
+                'data' => array(),
+                'stack' => 'Stack 2',
+            ),
+            array(
+                'label'=>'GDP',
+                'backgroundColor'=> 'rgba(193,46,12,0.2)',
+                'data' => array(),
+                'stack' => 'Stack 3',
+            ),
+            array(
+                'label'=>'GDS',
+                'backgroundColor'=> 'rgb(106, 90, 205)',
+                'data' => array(),
+                'stack' => 'Stack 4',
+            ),
+        );
+
+        $query = DB::table('MONITOR_KESEHATAN.dbo.trpantau')
+                ->select('pantau_id', DB::raw('CONVERT(varchar,pantau_date,106) as pantau_date'), 'imt', 'rasiowh', 'tekanandarah', 'gdp', 'gds')
+                ->where('regno', $regno)
+                ->orderBy('pantau_date', 'desc')
+                ->get();
+
+        foreach($query as $val){
+           $temp[0]['data'][] = $val->imt;
+           $temp[1]['data'][] = $val->rasiowh;
+           $temp[2]['data'][] = $val->tekanandarah;
+           $temp[3]['data'][] = $val->gdp;
+           $temp[4]['data'][] = $val->gds;
+        }
+
+        return response()->json([
+            'label' => array_column($query->toArray(), 'pantau_date'),
+            'data' => $temp,
+        ]);
+    }
+
 }

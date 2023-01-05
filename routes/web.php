@@ -36,4 +36,5 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/changepwd', [App\Http\Controllers\MemberController::class, 'changepwd'])->name('changepwd');
         Route::post('/submitpwd', [App\Http\Controllers\MemberController::class, 'pwd'])->name('pwd');
     });
+    Route::get('/chart/{regno}', [App\Http\Controllers\MemberController::class, 'chart'])->name('chart');
 });

@@ -3,7 +3,7 @@
 @section('title', 'Pemantauan Kesehatan Page')
 @section('content')
 <div class="row">
-    <div class="col-md-12 col-xxl-12">
+    <div class="col-md-12">
         <!--begin::Contacts-->
         <div class="card">
             <!--begin::Card header-->
