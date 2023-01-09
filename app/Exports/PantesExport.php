@@ -47,6 +47,7 @@ class PantesExport implements FromView
         ->join('MONITOR_KESEHATAN.dbo.msdiagnosis as md','d.diagnosis_id','=','md.diagnosis_id')
         ->leftJoin('MONITOR_KESEHATAN.dbo.diagnosisattr as attr','d.diagnosisattr','=','attr.diagnosis_attr')
         ->where('b.fgactive', 'Y')
+        ->orderBy('b.nama', 'asc')
         ->get();
 
         return view('exports.pantau', [
