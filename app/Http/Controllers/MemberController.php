@@ -398,13 +398,13 @@ class MemberController extends Controller
         $temp = array(
             array(
                 'label'=>'IMT',
-                'backgroundColor'=> 'rgba(255,221,50,0.2)',
+                'backgroundColor'=> 'rgba(237, 13, 43, 0.8)',
                 'data' => array(),
                 'stack' => 'Stack 0',
             ),
             array(
                 'label'=>'Rasio',
-                'backgroundColor'=> 'rgba(60,186,159,0.2)',
+                'backgroundColor'=> 'rgba(255, 130, 0, 0.66)',
                 'data' => array(),
                 'stack' => 'Stack 1',
             ),
