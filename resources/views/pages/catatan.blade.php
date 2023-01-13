@@ -19,6 +19,10 @@
                                 </span>
                                 <input type="text" data-kt-user-table-filter="search" class="form-control form-control-sm form-control-solid mw-100 min-w-150px min-w-md-200px ps-12" placeholder="Pencarian Catatan">
                             </div>
+                            <form class="form" method="get" action="{{ route('exportexcelbyid', $id) }}">
+                             @csrf
+                            <button class="btn btn-sm btn-success" type="submit" id="btnexport"><i class="bi bi-download me-3"></i>Export</button>
+                            </form>
                         </div>
                     </div>
                     <div class="table-responsive">

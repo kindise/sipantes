@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\PantesExport;
+use App\Exports\MemberExport;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -342,6 +343,12 @@ class MemberController extends Controller
 
       
         return Excel::download(new PantesExport($tglmulai, $tglsd), date('Y-m-d').'.xlsx');
+    }
+
+    public function exportexcelbyid($id)
+    {
+    
+        return Excel::download(new MemberExport($id), $id.'-'.date('Y-m-d').'.xlsx');
     }
 
     public function changepwd()
