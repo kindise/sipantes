@@ -75,6 +75,17 @@ class LoginController extends Controller
                 'password' => $request->password
             ];
 
+            $cek_permission = User::select('users.no_absen', 'role_user.role_id', 'permission_role.permission_id')
+            ->leftJoin('role_user', 'users.id', '=', 'role_user.user_id')
+            ->leftJoin('permission_role', 'role_user.role_id', '=', 'permission_role.role_id')
+            ->where('no_absen', $request->noabsen)
+            ->where('permission_id', '1078')
+            ->first();
+
+            if (!$cek_permission) {
+                return redirect()->back()->withErrors(['Anda belum memiliki role untuk mengakses halaman ini. Silahkan hubungi IT'])->withInput();
+            }
+
             //check salah input password max 3x
             $check = UserFailLogin::select(DB::raw("count(no_absen) as jumlah"))
                 ->where('no_absen', $request->noabsen)
