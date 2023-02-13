@@ -155,7 +155,7 @@
                                 <!--begin::Col-->
                                 <div class="col-md-6 fv-row fv-plugins-icon-container">
                                     <!--begin::Label-->
-                                    <label class="required fs-5 fw-semibold mb-2">Faktor Risiko</label>
+                                    <label class="fs-5 fw-semibold mb-2">Faktor Risiko</label>
                                     <!--end::Label-->
                                     @foreach($resiko as $val)
                                     <div class="form-check form-check-custom form-check-solid mt-2">
@@ -170,7 +170,7 @@
                                 <!--begin::Col-->
                                 <div class="col-md-6 fv-row fv-plugins-icon-container">
                                     <!--end::Label-->
-                                    <label class="required fs-5 fw-semibold mb-2">Faktor Predisposisi</label>
+                                    <label class="fs-5 fw-semibold mb-2">Faktor Predisposisi</label>
                                     <!--end::Label-->
                                     @foreach($predisposisi as $val)
                                     <div class="form-check form-check-custom form-check-solid mt-2">
@@ -187,7 +187,7 @@
                                 <!--begin::Col-->
                                 <div class="col-md-12 fv-row fv-plugins-icon-container">
                                     <!--begin::Label-->
-                                    <label class="required fs-5 fw-semibold mb-2">Diagnosis</label>
+                                    <label class="fs-5 fw-semibold mb-2">Diagnosis</label>
                                     <!--end::Label-->
                                     <div class="row">
                                     @foreach($diagnosis as $val)

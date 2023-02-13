@@ -5,6 +5,7 @@ $color = '';
     <thead>
     <tr>
         <th>Nama</th>
+        <th>No. Telp</th>
         <th>No. Transaksi</th>
         <th>Jenis Kelamin</th>
         <th>TB</th>
@@ -219,6 +220,7 @@ $color = '';
             @endif
         <tr>
             <td>{{ $val->nama }}</td>
+            <td>{{ $val->nohp }}</td>
             <td>{{ $val->pantau_id }}</td>
             <td>{{ ($val->jenis_kelamin == 1 ? 'Laki - Laki' : 'Perempuan') }}</td>
             <td>{{ $val->tinggibadan }}</td>
