@@ -207,7 +207,6 @@ class MemberController extends Controller
 
     public function buatpantauan (Request $request)
     {
-        
         try {
             DB::beginTransaction();
             $member = $request->member;
@@ -232,27 +231,33 @@ class MemberController extends Controller
                 'created_by' => auth()->user()->no_absen,
             ]);
 
-            $resiko_array = array_map(function ($v) use ($nopantau) {
-                return array(
-                    'pantau_id' => $nopantau,
-                    'faktor_id' => $v,
-                    'fgfaktor' => 'R',
-                    'created_at' => Carbon::now(),
-                    'created_by' => auth()->user()->no_absen,
-                );
-            }, $request->resiko);
-
-            $predisposisi_array = array_map(function ($v) use ($nopantau) {
-                return array(
-                    'pantau_id' => $nopantau,
-                    'faktor_id' => $v,
-                    'fgfaktor' => 'P',
-                    'created_at' => Carbon::now(),
-                    'created_by' => auth()->user()->no_absen,
-                );
-            }, $request->predisposisi ?? []);
-
-            $trfaktor = DB::table('MONITOR_KESEHATAN.dbo.trfaktor')->insert(array_merge($resiko_array, $predisposisi_array));
+            if($request->has('resiko')){
+                $resiko_array = array_map(function ($v) use ($nopantau) {
+                    return array(
+                        'pantau_id' => $nopantau,
+                        'faktor_id' => $v,
+                        'fgfaktor' => 'R',
+                        'created_at' => Carbon::now(),
+                        'created_by' => auth()->user()->no_absen,
+                    );
+                }, $request->resiko);
+                $trfaktor = DB::table('MONITOR_KESEHATAN.dbo.trfaktor')->insert($resiko_array);
+            }
+            
+            if($request->has('predisposisi')){
+                $predisposisi_array = array_map(function ($v) use ($nopantau) {
+                    return array(
+                        'pantau_id' => $nopantau,
+                        'faktor_id' => $v,
+                        'fgfaktor' => 'P',
+                        'created_at' => Carbon::now(),
+                        'created_by' => auth()->user()->no_absen,
+                    );
+                }, $request->predisposisi ?? []);
+    
+                $trfaktor = DB::table('MONITOR_KESEHATAN.dbo.trfaktor')->insert($predisposisi_array);
+            }
+           
             $trdiagnosis = DB::table('MONITOR_KESEHATAN.dbo.trdiagnosis')->insert([
                 'pantau_id' => $nopantau,
                 'diagnosis_id' => $request->diagnosis,
