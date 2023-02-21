@@ -44,6 +44,8 @@
                                     <th class="min-w-125px">GDP / GDS</th>
                                     <th class="min-w-125px">Diet</th>
                                     <th class="min-w-125px">Latihan Fisik</th>
+                                    <th class="min-w-125px">Faktor Resiko</th>
+                                    <th class="min-w-125px">Faktor Predisposisi</th>
                                     <th class="min-w-125px">Diagnosis</th>
                                 </tr>
                             </thead>
@@ -286,6 +288,8 @@
                         render: function ( data, type, row ) {
                             return data.nama_diagnosis + ' -> ' + data.nama_attr;
                     }},
+                    {data: 'resiko', name: 'resiko'},
+                    {data: 'predisposisi', name: 'predisposisi'},
                     
                 ],
                 drawCallback: function(settings) {

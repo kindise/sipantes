@@ -177,6 +177,12 @@ class MemberController extends Controller
         ->join('MONITOR_KESEHATAN.dbo.trdiagnosis as d','trpantau.pantau_id','=','d.pantau_id')
         ->join('MONITOR_KESEHATAN.dbo.msdiagnosis as md','d.diagnosis_id','=','md.diagnosis_id')
         ->leftJoin('MONITOR_KESEHATAN.dbo.diagnosisattr as attr','d.diagnosisattr','=','attr.diagnosis_attr')
+        ->leftJoin(DB::raw("(select MONITOR_KESEHATAN.dbo.trfaktor.pantau_id, MONITOR_KESEHATAN.dbo.msresiko.nama as resiko from MONITOR_KESEHATAN.dbo.trfaktor inner join MONITOR_KESEHATAN.dbo.msresiko on MONITOR_KESEHATAN.dbo.trfaktor.faktor_id = MONITOR_KESEHATAN.dbo.msresiko.resiko_id where MONITOR_KESEHATAN.dbo.trfaktor.fgfaktor = 'R') resiko"), function($join) {
+            $join->on('resiko.pantau_id', '=', 'trpantau.pantau_id');
+        })
+        ->leftJoin(DB::raw("(select MONITOR_KESEHATAN.dbo.trfaktor.pantau_id, MONITOR_KESEHATAN.dbo.mspredisposisi.nama as predisposisi from MONITOR_KESEHATAN.dbo.trfaktor inner join MONITOR_KESEHATAN.dbo.mspredisposisi on MONITOR_KESEHATAN.dbo.trfaktor.faktor_id = MONITOR_KESEHATAN.dbo.mspredisposisi.predisposisi_id where MONITOR_KESEHATAN.dbo.trfaktor.fgfaktor = 'P') predis"), function($join) {
+            $join->on('predis.pantau_id', '=', 'trpantau.pantau_id');
+        })
         ->where('regno', $id);
         return datatables()->query($query)
              ->addColumn('aksi', function($data){
