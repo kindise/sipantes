@@ -17,7 +17,7 @@ class MemberExport implements FromView
     {
         
         $trpantau =  DB::table('MONITOR_KESEHATAN.dbo.trpantau as p')
-            ->select(DB::raw("p.pantau_id, p.regno, b.nama, b.jenis_kelamin, b.usia,
+            ->select(DB::raw("p.pantau_id, p.regno, b.nama, b.nohp, b.jenis_kelamin, b.usia,
             p.tinggibadan, p.beratbadan, p.imt, p.bbideal, p.lingkarperut, p.lingkarpanggul, p.rasiowh,
             p.tekanandarah, p.gdp, p.gds, p.diet, p.latihanfisik, CONCAT(md.nama_diagnosis, ' -> ', attr.nama_attr) as diagnosis,
             resiko = STUFF((
