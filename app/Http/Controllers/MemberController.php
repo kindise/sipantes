@@ -173,17 +173,14 @@ class MemberController extends Controller
 
     public function dtablelog($id)
     {
-        $query = DB::table('MONITOR_KESEHATAN.dbo.trpantau')
-        ->join('MONITOR_KESEHATAN.dbo.trdiagnosis as d','trpantau.pantau_id','=','d.pantau_id')
-        ->join('MONITOR_KESEHATAN.dbo.msdiagnosis as md','d.diagnosis_id','=','md.diagnosis_id')
-        ->leftJoin('MONITOR_KESEHATAN.dbo.diagnosisattr as attr','d.diagnosisattr','=','attr.diagnosis_attr')
-        ->leftJoin(DB::raw("(select MONITOR_KESEHATAN.dbo.trfaktor.pantau_id, MONITOR_KESEHATAN.dbo.msresiko.nama as resiko from MONITOR_KESEHATAN.dbo.trfaktor inner join MONITOR_KESEHATAN.dbo.msresiko on MONITOR_KESEHATAN.dbo.trfaktor.faktor_id = MONITOR_KESEHATAN.dbo.msresiko.resiko_id where MONITOR_KESEHATAN.dbo.trfaktor.fgfaktor = 'R') resiko"), function($join) {
-            $join->on('resiko.pantau_id', '=', 'trpantau.pantau_id');
-        })
-        ->leftJoin(DB::raw("(select MONITOR_KESEHATAN.dbo.trfaktor.pantau_id, MONITOR_KESEHATAN.dbo.mspredisposisi.nama as predisposisi from MONITOR_KESEHATAN.dbo.trfaktor inner join MONITOR_KESEHATAN.dbo.mspredisposisi on MONITOR_KESEHATAN.dbo.trfaktor.faktor_id = MONITOR_KESEHATAN.dbo.mspredisposisi.predisposisi_id where MONITOR_KESEHATAN.dbo.trfaktor.fgfaktor = 'P') predis"), function($join) {
-            $join->on('predis.pantau_id', '=', 'trpantau.pantau_id');
-        })
-        ->where('regno', $id);
+        $query = DB::table('MONITOR_KESEHATAN.dbo.trpantau as p')
+        ->select('p.pantau_id', 'p.regno', 'p.pantau_date', 'p.tinggibadan', 'p.beratbadan', 'p.lingkarperut', 'p.lingkarpanggul', 'p.imt', 'p.bbideal', 'p.rasiowh', 'p.gdp', 'p.gds', 'p.diet', 'p.latihanfisik', 'md.nama_diagnosis', 'attr.nama_attr', 
+                 DB::raw("STUFF((SELECT ', ' + r.nama FROM MONITOR_KESEHATAN.dbo.trfaktor f INNER JOIN MONITOR_KESEHATAN.dbo.msresiko r ON f.faktor_id = r.resiko_id WHERE f.fgfaktor = 'R' AND f.pantau_id = p.pantau_id FOR XML PATH(''), TYPE).value('.', 'nvarchar(max)'), 1, 1, '') AS resiko"),
+                 DB::raw("STUFF((SELECT ', ' + pr.nama FROM MONITOR_KESEHATAN.dbo.trfaktor f INNER JOIN MONITOR_KESEHATAN.dbo.mspredisposisi pr ON f.faktor_id = pr.predisposisi_id WHERE f.fgfaktor = 'P' AND f.pantau_id = p.pantau_id FOR XML PATH(''), TYPE).value('.', 'nvarchar(max)'), 1, 1, '') AS predisposisi"))
+        ->join('MONITOR_KESEHATAN.dbo.trdiagnosis as d', 'p.pantau_id', '=', 'd.pantau_id')
+        ->join('MONITOR_KESEHATAN.dbo.msdiagnosis as md', 'd.diagnosis_id', '=', 'md.diagnosis_id')
+        ->leftJoin('MONITOR_KESEHATAN.dbo.diagnosisattr as attr', 'd.diagnosisattr', '=', 'attr.diagnosis_attr')
+        ->where('p.regno', $id);
         return datatables()->query($query)
              ->addColumn('aksi', function($data){
                 $html  = '<button class="btn btn-icon btn-sm btn-primary me-3" name="'.$data->pantau_id.'"';
