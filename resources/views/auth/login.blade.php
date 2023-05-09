@@ -45,7 +45,7 @@
 									Silahkan Masuk</h1>
 									<!--end::Title-->
 									<!--begin::Subtitle-->
-									<div class="text-gray-500 fw-semibold fs-6">Sistem Informasi ETiket RSUD Pasar Rebo</div>
+									<div class="text-gray-500 fw-semibold fs-6">Sistem Informasi Pemantauan Kesehatan Karyawan RSUD Pasar Rebo</div>
 									<!--end::Subtitle=-->
 								</div>
 								<!--begin::Heading-->
